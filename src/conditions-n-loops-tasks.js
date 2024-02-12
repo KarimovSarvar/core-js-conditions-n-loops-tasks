@@ -356,8 +356,15 @@ function getSpiralMatrix(/* size */) {
  *    [7, 8, 9]         [9, 6, 3]
  *  ]                 ]
  */
-function rotateMatrix(/* matrix */) {
-  throw new Error('Not implemented');
+function rotateMatrix(matrix) {
+  const initialMatrix = JSON.parse(JSON.stringify(matrix));
+  const rotatedMatrix = matrix;
+
+  for (let i = 0; i < matrix.length; i += 1) {
+    for (let j = matrix.length - 1, k = 0; j >= 0; j -= 1, k += 1) {
+      rotatedMatrix[i][k] = initialMatrix[j][i];
+    }
+  }
 }
 
 /**
@@ -411,8 +418,24 @@ function sortByAsc(arr) {
  *  '012345', 3 => '024135' => '043215' => '031425'
  *  'qwerty', 3 => 'qetwry' => 'qtrewy' => 'qrwtey'
  */
-function shuffleChar(/* str, iterations */) {
-  throw new Error('Not implemented');
+function shuffleChar(str, iterations) {
+  let result = '';
+  let step = 1;
+  let string = str;
+
+  for (let it = 0; it < iterations; it += 1) {
+    result = '';
+    for (let i = 0; i < string.length; i += step) {
+      result += string[i];
+    }
+    for (let i = step / 2; i < string.length; i += step) {
+      result += string[i];
+    }
+    string = result;
+    step *= 2; // Удваиваем шаг, так как каждая итерация удваивает расстояние между символами, которые остаются на своих местах
+  }
+
+  return result;
 }
 
 /**
@@ -432,8 +455,23 @@ function shuffleChar(/* str, iterations */) {
  * @param {number} number The source number
  * @returns {number} The nearest larger number, or original number if none exists.
  */
-function getNearestBigger(/* number */) {
-  throw new Error('Not implemented');
+function getNearestBigger(number) {
+  const sortedDigits = (num) => {
+    const numArr = [];
+    const strNum = String(num);
+
+    for (let i = 0; i < strNum.length; i += 1) numArr[i] = strNum[i];
+
+    return numArr.sort((a, b) => b - a).join('');
+  };
+
+  const max = sortedDigits(number);
+
+  for (let i = number + 1; i <= max; i += 1) {
+    if (max === sortedDigits(i)) return i;
+  }
+
+  return number;
 }
 
 module.exports = {
